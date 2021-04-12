@@ -5,10 +5,7 @@ import hello.itemservice.domain.item.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -55,8 +52,49 @@ public class BasicItemController {
     }
 
     // 같은 URL이지만 HTTP 메소드로 기능을 구분해주기
-    @PostMapping("/add")
-    public void add() {
+    // @PostMapping("/add")
+    public String addItemV1(
+            @RequestParam String itemName,
+            @RequestParam Integer price,
+            @RequestParam Integer quantity,
+            Model model
+    ) {
+        Item item = new Item();
 
+        item.setItemName(itemName);
+        item.setPrice(price);
+        item.setQuantity(quantity);
+
+        itemRepository.save(item);
+
+        model.addAttribute("item", item);
+
+        // 기존 상품 상세 페이지 활용
+        return "basic/item";
+    }
+
+    // 같은 URL이지만 HTTP 메소드로 기능을 구분해주기
+    // @PostMapping("/add")
+    public String addItemV2(@ModelAttribute("item") Item item) { // 파라미터로 Model도 받을 필요 없어짐
+        itemRepository.save(item);
+        // model.addAttribute("item", item); // 자동 추가 생략 가능
+
+        // 기존 상품 상세 페이지 활용
+        return "basic/item";
+    }
+
+    // @PostMapping("/add")
+    public String addItemV3(@ModelAttribute Item item) {
+        // `name`을 지우면, `Item` 이라는 클래스명의 첫 글자만 소문자로 바꾼 것이 `name`이 된다.
+        itemRepository.save(item);
+
+        // 기존 상품 상세 페이지 활용
+        return "basic/item";
+    }
+
+    @PostMapping("/add")
+    public String addItemV4(Item item) {
+        itemRepository.save(item);
+        return "basic/item";
     }
 }
