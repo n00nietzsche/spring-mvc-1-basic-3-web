@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
     <title>Title</title>
@@ -9,7 +9,7 @@
     <li>
         상품관리
         <ul>
-            <li><a href="/templates/basic/items">상품관리 - 기본</a></li>
+            <li><a href="/basic/items" th:href="@{|/basic/items|}">상품관리 - 기본</a></li>
         </ul>
     </li>
 </ul>
